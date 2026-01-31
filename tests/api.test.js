@@ -52,6 +52,8 @@ describe('API Functions', () => {
     expect(getDefaultLabel('visits')).toBe('Visits');
     expect(getDefaultLabel('bounce-rate')).toBe('Bounce Rate');
     expect(getDefaultLabel('avg-session')).toBe('Avg Session');
+    expect(getDefaultLabel('live')).toBe('Live Visitors');
+    expect(getDefaultLabel('realtime')).toBe('Live Visitors');
     expect(getDefaultLabel('unknown')).toBe('unknown');
   });
 
@@ -64,6 +66,8 @@ describe('API Functions', () => {
     expect(getMetricColor('visitors', '', 100)).toBe('green');
     expect(getMetricColor('visits', null, 100)).toBe('blue');
     expect(getMetricColor('avg-session', undefined, 100)).toBe('purple');
+    expect(getMetricColor('live', 'auto', 42)).toBe('red');
+    expect(getMetricColor('realtime', '', 10)).toBe('red');
     expect(getMetricColor('unknown-metric', 'auto', 50)).toBe('blue');
     // Bounce rate thresholds
     expect(getMetricColor('bounce-rate', 'auto', 80)).toBe('red');
@@ -90,10 +94,14 @@ describe('API Functions', () => {
     expect(formatMetricValue({ visits: 800 }, 'visits').formattedValue).toBe('800');
     expect(formatMetricValue({ bounces: 50, visits: 100 }, 'bounce-rate').formattedValue).toBe('50.0%');
     expect(formatMetricValue({ totaltime: 200, visits: 100 }, 'avg-session').formattedValue).toBe('2s');
+    expect(formatMetricValue({ totals: { visitors: 42 } }, 'live').formattedValue).toBe('42');
+    expect(formatMetricValue({ totals: { visitors: 1500 } }, 'realtime').formattedValue).toBe('1.5K');
     expect(formatMetricValue({}, 'unknown').formattedValue).toBe('Unknown');
     
     // Missing data defaults
     expect(formatMetricValue({}, 'views').value).toBe(0);
+    expect(formatMetricValue({}, 'live').value).toBe(0);
+    expect(formatMetricValue({ totals: {} }, 'live').value).toBe(0);
     
     // Falsy visits values (undefined, null, false, 0, negative) - should default to 1
     expect(formatMetricValue({ bounces: 10, visits: 0 }, 'bounce-rate').formattedValue).toBe('1000.0%');
@@ -127,6 +135,26 @@ describe('API Functions', () => {
       // Test default parameter (no range provided)
       await fetchUmamiData('https://api.umami.is/v1', 'test', 'token', 'views');
       expect(fetch.mock.calls[2][0]).toContain('startAt=946684800000');
+    });
+
+    test('fetches realtime data using realtime endpoint', async () => {
+      fetch.mockResolvedValue({ ok: true, json: async () => ({ totals: { visitors: 42 } }) });
+
+      // Test 'live' metric
+      await fetchUmamiData('https://api.umami.is/v1', 'test-website', 'token', 'live');
+      expect(fetch.mock.calls[0][0]).toContain('/realtime/test-website');
+      expect(fetch.mock.calls[0][0]).not.toContain('startAt');
+      
+      // Test 'realtime' metric (alias)
+      await fetchUmamiData('https://api.umami.is/v1/', 'test-id', 'token123', 'realtime');
+      expect(fetch.mock.calls[1][0]).toContain('/realtime/test-id');
+      expect(fetch.mock.calls[1][0]).not.toContain('//realtime'); // Trailing slash removed
+    });
+
+    test('handles realtime endpoint errors', async () => {
+      fetch.mockResolvedValue({ ok: false, status: 403, statusText: 'Forbidden', text: async () => 'Access denied' });
+      await expect(fetchUmamiData('https://api.umami.is/v1', 'test', 'token', 'live'))
+        .rejects.toThrow('Umami API error: 403 Forbidden - Access denied');
     });
 
     test('handles errors', async () => {
@@ -256,6 +284,26 @@ describe('API Functions', () => {
       mockReq.query = { website: 'test3', token: 'token3', cache: '0' };
       await handler(mockReq, mockRes);
       expect(mockRes.send).toHaveBeenCalled();
+      
+      // Test live metric uses 60 second cache
+      if (app.cache) app.cache.flushAll();
+      mockReq.params = { metric: 'live' };
+      mockReq.query = { website: 'live-test', token: 'token-live' };
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({ totals: { visitors: 42 } }),
+        text: async () => '<svg>badge</svg>'
+      });
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        text: async () => '<svg>live badge</svg>'
+      });
+      await handler(mockReq, mockRes);
+      expect(mockRes.send).toHaveBeenCalledWith('<svg>live badge</svg>');
     });
 
     test('/api/:metric handles errors with style fallback', async () => {
@@ -325,6 +373,24 @@ describe('API Functions', () => {
       });
       expect(mockRes.status).toHaveBeenCalledWith(200);
       expect(mockRes.send).toHaveBeenCalledWith('<svg>error</svg>');
+    });
+
+    test('/api/:metric handles complete error fallback with redirect', async () => {
+      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+
+      mockReq.params = { metric: 'views' };
+      mockReq.query = { website: 'error-test', token: 'token', style: 'plastic' };
+
+      // First fetch fails (Umami API error), then error badge fetch also fails
+      fetch
+        .mockRejectedValueOnce(new Error('Network error'))
+        .mockRejectedValueOnce(new Error('Error badge fetch failed'));
+
+      await handler(mockReq, mockRes);
+
+      // Should fall back to redirect
+      expect(mockRes.redirect).toHaveBeenCalledWith(expect.stringContaining('Failed%20to%20fetch'));
+      expect(mockRes.redirect).toHaveBeenCalledWith(expect.stringContaining('style=plastic'));
     });
   });
 });

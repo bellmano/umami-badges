@@ -55,6 +55,12 @@ app.get('/api/:metric', async (req, res) => {
       
       // Cache the result
       let cacheTime = 300;
+      
+      // For live/realtime metrics, use shorter cache (60 seconds default)
+      if (metric === 'live' || metric === 'realtime') {
+        cacheTime = 60;
+      }
+      
       const parsedCache = parseInt(cacheParam);
       if (parsedCache && parsedCache > 0) {
         cacheTime = parsedCache;
@@ -114,6 +120,25 @@ app.get('/api/:metric', async (req, res) => {
 // Fetch data from Umami API
 async function fetchUmamiData(umamiUrl, websiteId, token, metric, range = 'all') {
   const baseUrl = umamiUrl.replace(/\/$/, ''); // Remove trailing slash
+  
+  // For realtime/live metrics, use the realtime endpoint
+  if (metric === 'live' || metric === 'realtime') {
+    const url = `${baseUrl}/realtime/${websiteId}`;
+    const headers = {
+      'Accept': 'application/json',
+      'User-Agent': 'Umami-GitHub-Badges/1.0',
+      'x-umami-api-key': token
+    };
+
+    const response = await fetch(url, { headers });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Umami API error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    return await response.json();
+  }
   
   // Calculate date range based on range parameter
   const endDate = new Date().getTime();
@@ -180,6 +205,16 @@ function formatMetricValue(data, metric) {
         const visits = (data.visits && data.visits > 0) ? data.visits : 1;
         value = totalTime / visits;
         formattedValue = formatDuration(value);
+      },
+      'live': () => {
+        // Realtime data returns totals.visitors for active visitors
+        value = data.totals?.visitors || 0;
+        formattedValue = formatNumber(value);
+      },
+      'realtime': () => {
+        // Alias for 'live'
+        value = data.totals?.visitors || 0;
+        formattedValue = formatNumber(value);
       }
     };
 
@@ -237,7 +272,9 @@ function getDefaultLabel(metric) {
     'visitors': 'Visitors',
     'visits': 'Visits',
     'bounce-rate': 'Bounce Rate',
-    'avg-session': 'Avg Session'
+    'avg-session': 'Avg Session',
+    'live': 'Live Visitors',
+    'realtime': 'Live Visitors'
   };
   return labels[metric] || metric;
 }
@@ -254,7 +291,9 @@ function getMetricColor(metric, requestedColor, value) {
     'visitors': 'green',
     'visits': 'blue',
     'bounce-rate': value > 70 ? 'red' : value > 40 ? 'orange' : 'green',
-    'avg-session': 'purple'
+    'avg-session': 'purple',
+    'live': 'red',
+    'realtime': 'red'
   };
 
   return colorMap[metric] || 'blue';

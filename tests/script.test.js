@@ -45,11 +45,14 @@ describe('Badge Generator', () => {
           <option value="visits">Visits</option>
           <option value="bounce-rate">Bounce Rate</option>
           <option value="avg-session">Avg Session</option>
+          <option value="live">Live Visitors</option>
         </select>
         <select id="style"><option value="">Auto</option><option value="for-the-badge">For the Badge</option></select>
         <select id="color"><option value="">Auto</option><option value="green">Green</option></select>
         <input type="text" id="label" value="" />
-        <select id="range"><option value="">All</option><option value="30d">30d</option></select>
+        <div class="field-wrapper">
+          <select id="range"><option value="">All</option><option value="30d">30d</option></select>
+        </div>
       </form>
       <div id="resultSection" class="hidden">
         <img id="badgePreview" src="" />
@@ -138,7 +141,8 @@ describe('Badge Generator', () => {
       { value: 'visitors', label: 'Visitors' },
       { value: 'visits', label: 'Visits' },
       { value: 'bounce-rate', label: 'Bounce Rate' },
-      { value: 'avg-session', label: 'Avg Session' }
+      { value: 'avg-session', label: 'Avg Session' },
+      { value: 'live', label: 'Live Visitors' }
     ];
     
     metrics.forEach(({ value, label }) => {
@@ -256,6 +260,7 @@ describe('Badge Generator', () => {
     const metricSelect = document.getElementById('metric');
     const labelInput = document.getElementById('label');
     const colorSelect = document.getElementById('color');
+    const rangeField = document.getElementById('range').closest('.field-wrapper');
     
     // Test placeholder update when label is empty
     labelInput.value = '';
@@ -265,6 +270,7 @@ describe('Badge Generator', () => {
     
     expect(labelInput.placeholder).toBe('Visitors');
     expect(colorSelect.value).toBe('');
+    expect(rangeField.style.display).toBe('');
     
     // Test doesn't update placeholder if label has value
     labelInput.value = 'My Label';
@@ -273,6 +279,17 @@ describe('Badge Generator', () => {
     metricSelect.dispatchEvent(new Event('change'));
     expect(labelInput.placeholder).toBe('Visitors'); // Shouldn't change
     expect(colorSelect.value).toBe(''); // But still resets color
+    expect(rangeField.style.display).toBe(''); // Range visible for non-live metrics
+    
+    // Test range field hides for live metric
+    metricSelect.value = 'live';
+    metricSelect.dispatchEvent(new Event('change'));
+    expect(rangeField.style.display).toBe('none');
+    
+    // Test range field shows again for non-live metric
+    metricSelect.value = 'views';
+    metricSelect.dispatchEvent(new Event('change'));
+    expect(rangeField.style.display).toBe('');
   });
 
   test('handles all tooltip interactions and edge cases', () => {
