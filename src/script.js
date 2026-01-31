@@ -41,7 +41,8 @@ function getDefaultLabel(metric) {
         'visitors': 'Visitors',
         'visits': 'Visits',
         'bounce-rate': 'Bounce Rate',
-        'avg-session': 'Avg Session'
+        'avg-session': 'Avg Session',
+        'live': 'Live Visitors'
     };
     return labels[metric] || metric;
 }
@@ -109,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const metric = this.value;
             const colorSelect = document.getElementById('color');
             const labelInput = document.getElementById('label');
+            const rangeField = document.getElementById('range')?.closest('.field-wrapper');
 
             if (labelInput && !labelInput.value) {
                 labelInput.placeholder = getDefaultLabel(metric);
@@ -116,6 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (colorSelect) {
                 colorSelect.value = '';
+            }
+
+            // Hide range field for live metrics since they always show realtime data
+            if (rangeField) {
+                if (metric === 'live') {
+                    rangeField.style.display = 'none';
+                } else {
+                    rangeField.style.display = '';
+                }
             }
         });
     }

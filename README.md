@@ -52,6 +52,7 @@ https://umami-github-badges.vercel.app/api/{metric}?website={WEBSITE_ID}&token={
 | `visits` | Total visits | ![Visits](https://img.shields.io/badge/Visits-8.9K-blue?style=for-the-badge) |
 | `bounce-rate` | Bounce rate percentage | ![Bounce Rate](https://img.shields.io/badge/Bounce%20Rate-45.2%25-orange?style=for-the-badge) |
 | `avg-session` | Average session duration | ![Avg Session](https://img.shields.io/badge/Avg%20Session-1m_36s-purple?style=for-the-badge) |
+| `live` | Live visitors (last 30 minutes) | ![Live](https://img.shields.io/badge/Live%20Visitors-42-red?style=for-the-badge) |
 
 ## :art: Customization Options
 
