@@ -12,7 +12,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=vulnerabilities&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=code_smells&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
 
-Generate beautiful, dynamic badges for your Umami website analytics! Show off your website traffic, page views, and visitor stats directly in your README files.
+Generate dynamic badges for your Umami website analytics! Show off your website traffic, page views, and visitor stats directly in your README files or on your website.
 
 ## :rocket: Quick Start
 
