@@ -126,7 +126,7 @@ async function fetchUmamiData(umamiUrl, websiteId, token, metric, range = 'all')
     const url = `${baseUrl}/realtime/${websiteId}`;
     const headers = {
       'Accept': 'application/json',
-      'User-Agent': 'Umami-GitHub-Badges/1.0',
+      'User-Agent': 'Umami-Badges/1.0',
       'x-umami-api-key': token
     };
 
@@ -159,7 +159,7 @@ async function fetchUmamiData(umamiUrl, websiteId, token, metric, range = 'all')
   
   const headers = {
     'Accept': 'application/json',
-    'User-Agent': 'Umami-GitHub-Badges/1.0',
+    'User-Agent': 'Umami-Badges/1.0',
     'x-umami-api-key': token  // Umami uses x-umami-api-key header for API key authentication
   };
 
@@ -324,7 +324,7 @@ app.get('/health', (req, res) => {
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
-    console.log(`Umami GitHub Badges server running at: http://localhost:${port}`);
+    console.log(`Umami Badges server running at: http://localhost:${port}`);
   });
 }
 

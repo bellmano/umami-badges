@@ -1,18 +1,18 @@
-# :ramen: Umami GitHub Badges 
+# :ramen: Umami Badges 
 
-![Total Page Views](https://umami-github-badges.vercel.app/api/views?website=ca16f4b3-a794-4597-a7e9-abba6ee32112&token=api_O2dOgzOmyw1Y69y8HnngGdOtyoZ6N2Pi&range=all&style=for-the-badge&label=Total+Page+Views&cache=0)
-![Average Session Duration on Website](https://umami-github-badges.vercel.app/api/avg-session?website=ca16f4b3-a794-4597-a7e9-abba6ee32112&token=api_O2dOgzOmyw1Y69y8HnngGdOtyoZ6N2Pi&range=all&style=for-the-badge&label=Average+Session+Duration+on+Website&cache=0)
-![Unique Visitors](https://umami-github-badges.vercel.app/api/visitors?website=ca16f4b3-a794-4597-a7e9-abba6ee32112&token=api_O2dOgzOmyw1Y69y8HnngGdOtyoZ6N2Pi&range=all&style=for-the-badge&label=Unique+Visitors&cache=0)
+![Total Page Views](https://umami-badges.vercel.app/api/views?website=ca16f4b3-a794-4597-a7e9-abba6ee32112&token=api_O2dOgzOmyw1Y69y8HnngGdOtyoZ6N2Pi&range=all&style=for-the-badge&label=Total+Page+Views&cache=0)
+![Average Session Duration on Website](https://umami-badges.vercel.app/api/avg-session?website=ca16f4b3-a794-4597-a7e9-abba6ee32112&token=api_O2dOgzOmyw1Y69y8HnngGdOtyoZ6N2Pi&range=all&style=for-the-badge&label=Average+Session+Duration+on+Website&cache=0)
+![Unique Visitors](https://umami-badges.vercel.app/api/visitors?website=ca16f4b3-a794-4597-a7e9-abba6ee32112&token=api_O2dOgzOmyw1Y69y8HnngGdOtyoZ6N2Pi&range=all&style=for-the-badge&label=Unique+Visitors&cache=0)
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=coverage&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=security_rating&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=sqale_rating&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=reliability_rating&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=bugs&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=vulnerabilities&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-github-badges&metric=code_smells&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-github-badges)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=coverage&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=security_rating&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=sqale_rating&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=reliability_rating&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=bugs&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=vulnerabilities&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=bellmano_umami-badges&metric=code_smells&token=6e9bb50bb14b2d851f65c161bef4a5e41dc5050c)](https://sonarcloud.io/summary/overall?id=bellmano_umami-badges)
 
-Generate beautiful, dynamic GitHub badges for your Umami website analytics! Show off your website traffic, page views, and visitor stats directly in your README files.
+Generate beautiful, dynamic badges for your Umami website analytics! Show off your website traffic, page views, and visitor stats directly in your README files.
 
 ## :rocket: Quick Start
 
@@ -30,17 +30,17 @@ You'll need:
 
 **Option A: Use the Web Interface**
 
-Visit: **[umami-github-badges.vercel.app](https://umami-github-badges.vercel.app/)**
+Visit: **[umami-badges.vercel.app](https://umami-badges.vercel.app/)**
 
 **Option B: Create URL Manually**
 ```
-https://umami-github-badges.vercel.app/api/{metric}?website={WEBSITE_ID}&token={API_TOKEN}&range=all&style=for-the-badge&cache=0
+https://umami-badges.vercel.app/api/{metric}?website={WEBSITE_ID}&token={API_TOKEN}&range=all&style=for-the-badge&cache=0
 ```
 
 ### 3. Add to Your README
 
 ```markdown
-![Website Analytics](https://umami-github-badges.vercel.app/api/views?website=your-website-id&token=your-api-token&range=all&style=for-the-badge&cache=0)
+![Website Analytics](https://umami-badges.vercel.app/api/views?website=your-website-id&token=your-api-token&range=all&style=for-the-badge&cache=0)
 ```
 
 ## :bar_chart: Available Metrics
@@ -83,7 +83,7 @@ This will execute the tests and generate a coverage report.
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## :mega: Issues or Suggestions
-Any issues or suggestions, please [create an issue on Github](https://github.com/bellmano/umami-github-badges/issues).
+Any issues or suggestions, please [create an issue on Github](https://github.com/bellmano/umami-badges/issues).
 
 ## :coffee: Buy me a coffee
 Donations are welcome to appreciate my work and to keep this project alive, but isn't required at all.
