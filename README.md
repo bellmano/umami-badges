@@ -24,17 +24,22 @@ You'll need:
 
 **:warning: Security Notice:** Your API key will be visible in the badge URL. This means anyone can view your website analytics data (views, visitors, etc.) but cannot modify settings or access other websites. Only use badges for public websites where you're comfortable sharing traffic statistics. You can rotate your API key anytime in Umami settings.
 
-**Note:** This service is designed for **Umami Cloud** (https://cloud.umami.is) which uses the API endpoint `https://api.umami.is/v1`. If you're self-hosting Umami, you'll need to modify the code to point to your instance.
-
 ### 2. Generate Your Badge
 
 **Option A: Use the Web Interface**
 
 Visit: **[umami-badges.vercel.app](https://umami-badges.vercel.app/)**
 
-**Option B: Create URL Manually**
+**Option B: Build the URL yourself**
+
+Default (Umami Cloud):
 ```
 https://umami-badges.vercel.app/api/{metric}?website={WEBSITE_ID}&token={API_TOKEN}&range=all&style=for-the-badge&cache=0
+```
+
+Self‑hosted or custom domain (add `umamiUrl`):
+```
+https://umami-badges.vercel.app/api/{metric}?website={WEBSITE_ID}&token={API_TOKEN}&range=all&style=for-the-badge&cache=0&umamiUrl={CUSTOM_UMAMI_API_URL}
 ```
 
 ### 3. Add to Your README

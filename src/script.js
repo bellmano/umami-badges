@@ -6,6 +6,7 @@ function generateBadge() {
     const color = document.getElementById('color').value;
     const label = document.getElementById('label').value;
     const range = document.getElementById('range').value;
+    const umamiUrl = document.getElementById('umamiUrl')?.value?.trim();
 
     if (!websiteId || !token) {
         alert('Please fill in the required fields: (Website ID and API Key)');
@@ -20,6 +21,7 @@ function generateBadge() {
     if (style) params.append('style', style);
     if (color) params.append('color', color);
     if (label) params.append('label', label);
+    if (umamiUrl) params.append('umamiUrl', umamiUrl);
     params.append('cache', '0');  // Disable server-side caching
 
     const badgeUrl = `${globalThis.location.origin}/api/${metric}?${params.toString()}`;
