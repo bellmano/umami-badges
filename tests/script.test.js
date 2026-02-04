@@ -50,6 +50,7 @@ describe('Badge Generator', () => {
         <select id="style"><option value="">Auto</option><option value="for-the-badge">For the Badge</option></select>
         <select id="color"><option value="">Auto</option><option value="green">Green</option></select>
         <input type="text" id="label" value="" />
+        <input type="text" id="umamiUrl" value="" />
         <div class="field-wrapper">
           <select id="range"><option value="">All</option><option value="30d">30d</option></select>
         </div>
@@ -108,12 +109,14 @@ describe('Badge Generator', () => {
     expect(url).not.toContain('style=');
     expect(url).not.toContain('color=');
     expect(url).not.toContain('label=');
+    expect(url).not.toContain('umamiUrl=');
     
     // Test with all params
     document.getElementById('style').value = 'for-the-badge';
     document.getElementById('color').value = 'green';
     document.getElementById('label').value = 'Custom';
     document.getElementById('range').value = '30d';
+    document.getElementById('umamiUrl').value = 'https://umami.example.com/api/v1';
     form.dispatchEvent(new Event('submit'));
     
     url = document.getElementById('directUrl').value;
@@ -121,6 +124,7 @@ describe('Badge Generator', () => {
     expect(url).toContain('color=green');
     expect(url).toContain('label=Custom');
     expect(url).toContain('range=30d');
+    expect(url).toContain('umamiUrl=https%3A%2F%2Fumami.example.com%2Fapi%2Fv1');
     
     // Test result display
     expect(document.getElementById('resultSection').classList.contains('hidden')).toBe(false);

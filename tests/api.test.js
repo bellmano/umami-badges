@@ -12,7 +12,8 @@ const {
   formatDuration,
   getDefaultLabel,
   getMetricColor,
-  buildShieldsUrl
+  buildShieldsUrl,
+  resolveUmamiUrl
 } = require('../api/api');
 
 const app = require('../api/api');
@@ -85,6 +86,15 @@ describe('API Functions', () => {
     expect(url2).toContain('Test%20Label');
     expect(url2).toContain('50%25');
     expect(url2).toContain('logo=github');
+  });
+
+  test('resolveUmamiUrl handles empty, invalid, and valid inputs', () => {
+    expect(resolveUmamiUrl()).toBe('https://api.umami.is/v1');
+    expect(resolveUmamiUrl('')).toBe('https://api.umami.is/v1');
+    expect(resolveUmamiUrl('   ')).toBe('https://api.umami.is/v1');
+    expect(resolveUmamiUrl('example.com')).toBeNull();
+    expect(resolveUmamiUrl('http://umami.example.com/api/v1')).toBe('http://umami.example.com/api/v1');
+    expect(resolveUmamiUrl('https://umami.example.com/api/v1/')).toBe('https://umami.example.com/api/v1');
   });
 
   test('formatMetricValue formats all metric types and handles edge cases', () => {
@@ -207,6 +217,12 @@ describe('API Functions', () => {
       mockReq.query = { website: 'test' };
       await handler(mockReq, mockRes);
       expect(mockRes.redirect).toHaveBeenCalledWith(expect.stringContaining('Missing%20API%20Token'));
+
+      // Invalid Umami URL
+      mockRes.redirect.mockClear();
+      mockReq.query = { website: 'test', token: 'token123', umamiUrl: 'not-a-url' };
+      await handler(mockReq, mockRes);
+      expect(mockRes.redirect).toHaveBeenCalledWith(expect.stringContaining('Invalid%20Umami%20URL'));
       
       // Successful badge generation
       mockRes.redirect.mockClear();

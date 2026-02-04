@@ -10,6 +10,19 @@ const port = process.env.PORT || 3000;
 // Hardcoded Umami Cloud API URL
 const UMAMI_URL = 'https://api.umami.is/v1';
 
+function resolveUmamiUrl(customUrl) {
+  if (!customUrl) return UMAMI_URL;
+
+  const trimmed = String(customUrl).trim();
+  if (!trimmed) return UMAMI_URL;
+
+  if (!/^https?:\/\//i.test(trimmed)) {
+    return null;
+  }
+
+  return trimmed.replace(/\/$/, '');
+}
+
 // Cache for 5 minutes by default
 const cache = new NodeCache({ stdTTL: 300 });
 
@@ -33,7 +46,8 @@ app.get('/api/:metric', async (req, res) => {
       label,
       logo,
       range = 'all',
-      cache: cacheParam = '300'
+      cache: cacheParam = '300',
+      umamiUrl
     } = req.query;
 
     // Validate required parameters
@@ -45,13 +59,18 @@ app.get('/api/:metric', async (req, res) => {
       return res.redirect(`https://img.shields.io/badge/Error-Missing%20API%20Token-red?style=${style}`);
     }
 
+    const resolvedUmamiUrl = resolveUmamiUrl(umamiUrl);
+    if (!resolvedUmamiUrl) {
+      return res.redirect(`https://img.shields.io/badge/Error-Invalid%20Umami%20URL-red?style=${style}`);
+    }
+
     // Create cache key
-    const cacheKey = `${website}-${metric}-${range}-${token.substring(0, 8)}`;
+    const cacheKey = `${resolvedUmamiUrl}-${website}-${metric}-${range}-${token.substring(0, 8)}`;
     let data = cache.get(cacheKey);
 
     if (!data) {
       // Fetch data from Umami API
-      data = await fetchUmamiData(UMAMI_URL, website, token, metric, range);
+      data = await fetchUmamiData(resolvedUmamiUrl, website, token, metric, range);
       
       // Cache the result
       let cacheTime = 300;
@@ -341,3 +360,4 @@ module.exports.formatDuration = formatDuration;
 module.exports.getDefaultLabel = getDefaultLabel;
 module.exports.getMetricColor = getMetricColor;
 module.exports.buildShieldsUrl = buildShieldsUrl;
+module.exports.resolveUmamiUrl = resolveUmamiUrl;
