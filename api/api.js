@@ -19,8 +19,21 @@ function resolveUmamiUrl(customUrl) {
   if (!/^https?:\/\//i.test(trimmed)) {
     return null;
   }
+  const normalized = trimmed.replace(/\/$/, '');
 
-  return trimmed.replace(/\/$/, '');
+  try {
+    const parsed = new URL(normalized);
+    const isCloudHost = parsed.hostname === 'api.umami.is';
+
+    if (!isCloudHost && /\/api\/v1$/i.test(parsed.pathname)) {
+      parsed.pathname = parsed.pathname.replace(/\/api\/v1$/i, '/api');
+      return parsed.toString().replace(/\/$/, '');
+    }
+  } catch (error) {
+    return null;
+  }
+
+  return normalized;
 }
 
 // Cache for 5 minutes by default

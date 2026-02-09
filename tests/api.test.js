@@ -93,8 +93,10 @@ describe('API Functions', () => {
     expect(resolveUmamiUrl('')).toBe('https://api.umami.is/v1');
     expect(resolveUmamiUrl('   ')).toBe('https://api.umami.is/v1');
     expect(resolveUmamiUrl('example.com')).toBeNull();
-    expect(resolveUmamiUrl('http://umami.example.com/api/v1')).toBe('http://umami.example.com/api/v1');
-    expect(resolveUmamiUrl('https://umami.example.com/api/v1/')).toBe('https://umami.example.com/api/v1');
+    expect(resolveUmamiUrl('http://umami.example.com/api/v1')).toBe('http://umami.example.com/api');
+    expect(resolveUmamiUrl('https://umami.example.com/api/v1/')).toBe('https://umami.example.com/api');
+    expect(resolveUmamiUrl('https://api.umami.is/v1')).toBe('https://api.umami.is/v1');
+    expect(resolveUmamiUrl('https://%')).toBeNull();
   });
 
   test('formatMetricValue formats all metric types and handles edge cases', () => {
