@@ -5,12 +5,6 @@ Object.assign(navigator, {
   },
 });
 
-// Mock globalThis.location.origin
-Object.defineProperty(globalThis, 'location', {
-  value: { origin: 'http://localhost:3000' },
-  writable: true
-});
-
 // Load the script
 require('../src/script.js');
 

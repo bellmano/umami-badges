@@ -1,3 +1,8 @@
+// Polyfill TextEncoder/TextDecoder for the Jest environment
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = global.TextEncoder || TextEncoder;
+global.TextDecoder = global.TextDecoder || TextDecoder;
+
 // Mock node-fetch before requiring api
 jest.mock('node-fetch');
 const fetch = require('node-fetch');

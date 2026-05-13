@@ -10,8 +10,8 @@
     "test:coverage": "jest --coverage"
   },
   "devDependencies": {
-    "jest": "^30.3.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -30,7 +30,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.6",
-    "node-fetch": "^2.7.0",
+    "node-fetch": "^2.6.9",
     "node-cache": "^5.1.2"
   },
   "engines": {
