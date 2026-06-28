@@ -13,6 +13,10 @@
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1"
   },
+  "overrides": {
+    "js-yaml": "^3.14.2",
+    "@babel/core": "^7.29.0"
+  },
   "jest": {
     "testEnvironment": "jsdom",
     "collectCoverageFrom": [
