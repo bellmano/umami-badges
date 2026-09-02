@@ -202,17 +202,17 @@ describe('API Functions', () => {
     });
 
     test('/ and /health routes work correctly', () => {
-      const indexRoute = app._router.stack.find(r => r.route?.path === '/').route.stack[0].handle;
+      const indexRoute = app.router.stack.find(r => r.route?.path === '/').route.stack[0].handle;
       indexRoute(mockReq, mockRes);
       expect(mockRes.sendFile).toHaveBeenCalled();
 
-      const healthRoute = app._router.stack.find(r => r.route?.path === '/health').route.stack[0].handle;
+      const healthRoute = app.router.stack.find(r => r.route?.path === '/health').route.stack[0].handle;
       healthRoute(mockReq, mockRes);
       expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({ status: 'ok' }));
     });
 
     test('/api/:metric validates parameters and generates badges', async () => {
-      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+      const handler = app.router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
       
       // Missing website
       mockReq.params = { metric: 'views' };
@@ -256,7 +256,7 @@ describe('API Functions', () => {
     });
 
     test('/api/:metric handles caching correctly', async () => {
-      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+      const handler = app.router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
       if (app.cache) app.cache.flushAll();
       
       mockReq.params = { metric: 'visits' };
@@ -282,7 +282,7 @@ describe('API Functions', () => {
     });
 
     test('/api/:metric handles cache parameter variations', async () => {
-      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+      const handler = app.router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
       
       mockReq.params = { metric: 'views' };
       fetch.mockResolvedValue({
@@ -330,7 +330,7 @@ describe('API Functions', () => {
     });
 
     test('/api/:metric handles errors with style fallback', async () => {
-      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+      const handler = app.router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
       
       mockReq.params = { metric: 'visitors' };
       mockReq.query = { website: 'error-test', token: 'token' };
@@ -360,7 +360,7 @@ describe('API Functions', () => {
     });
 
     test('/api/:metric handles shields.io fetch error and returns error SVG', async () => {
-      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+      const handler = app.router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
 
       mockReq.params = { metric: 'views' };
       mockReq.query = { website: 'shield-error', token: 'token', style: 'flat' };
@@ -399,7 +399,7 @@ describe('API Functions', () => {
     });
 
     test('/api/:metric handles complete error fallback with redirect', async () => {
-      const handler = app._router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
+      const handler = app.router.stack.find(r => r.route?.path === '/api/:metric').route.stack[0].handle;
 
       mockReq.params = { metric: 'views' };
       mockReq.query = { website: 'error-test', token: 'token', style: 'plastic' };

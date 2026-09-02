@@ -10,8 +10,8 @@
     "test:coverage": "jest --coverage"
   },
   "devDependencies": {
-    "jest": "^30.5.0",
-    "jest-environment-jsdom": "^30.5.0"
+    "jest": "^30.5.1",
+    "jest-environment-jsdom": "^30.5.1"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -28,12 +28,16 @@
     "transform": {}
   },
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.6",
-    "node-fetch": "^2.6.9",
-    "node-cache": "^5.1.2"
+    "express": "^5.2.1",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.7.0"
   },
   "engines": {
     "node": ">=16"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }
