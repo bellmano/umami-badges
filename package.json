@@ -7,11 +7,14 @@
     "start": "node api/api.js",
     "dev": "node api/api.js",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "jest": "^30.5.1",
-    "jest-environment-jsdom": "^30.5.1"
+    "jest-environment-jsdom": "^30.5.1",
+    "prettier": "^3.9.6"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -20,7 +23,11 @@
       "src/script.js"
     ],
     "coverageDirectory": "coverage",
-    "coverageReporters": ["text", "lcov", "html"],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/tests/"
