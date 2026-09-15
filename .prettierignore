@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+dist/
+.github/dependabot.yml
+.github/FUNDING.yml
+.github/workflows/sonarcloud.yml
+.vscode/extensions.json
+index.html
+CONTRIBUTING.md
+README.md

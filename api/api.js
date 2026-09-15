@@ -1,14 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const fetch = require('node-fetch');
-const NodeCache = require('node-cache');
-const path = require('path');
+const express = require("express");
+const cors = require("cors");
+const fetch = require("node-fetch");
+const NodeCache = require("node-cache");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Hardcoded Umami Cloud API URL
-const UMAMI_URL = 'https://api.umami.is/v1';
+const UMAMI_URL = "https://api.umami.is/v1";
 
 function resolveUmamiUrl(customUrl) {
   if (!customUrl) return UMAMI_URL;
@@ -19,15 +19,15 @@ function resolveUmamiUrl(customUrl) {
   if (!/^https?:\/\//i.test(trimmed)) {
     return null;
   }
-  const normalized = trimmed.replace(/\/$/, '');
+  const normalized = trimmed.replace(/\/$/, "");
 
   try {
     const parsed = new URL(normalized);
-    const isCloudHost = parsed.hostname === 'api.umami.is';
+    const isCloudHost = parsed.hostname === "api.umami.is";
 
     if (!isCloudHost && /\/api\/v1$/i.test(parsed.pathname)) {
-      parsed.pathname = parsed.pathname.replace(/\/api\/v1$/i, '/api');
-      return parsed.toString().replace(/\/$/, '');
+      parsed.pathname = parsed.pathname.replace(/\/api\/v1$/i, "/api");
+      return parsed.toString().replace(/\/$/, "");
     }
   } catch (error) {
     return null;
@@ -40,41 +40,47 @@ function resolveUmamiUrl(customUrl) {
 const cache = new NodeCache({ stdTTL: 300 });
 
 app.use(cors());
-app.use(express.static('.'));
+app.use(express.static("."));
 
 // Serve the main page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../index.html"));
 });
 
 // Main badge endpoint
-app.get('/api/:metric', async (req, res) => {
+app.get("/api/:metric", async (req, res) => {
   try {
     const { metric } = req.params;
     const {
       website,
       token,
-      style = 'for-the-badge',
-        color = '',
+      style = "for-the-badge",
+      color = "",
       label,
       logo,
-      range = 'all',
-      cache: cacheParam = '300',
-      umamiUrl
+      range = "all",
+      cache: cacheParam = "300",
+      umamiUrl,
     } = req.query;
 
     // Validate required parameters
     if (!website) {
-      return res.redirect(`https://img.shields.io/badge/Error-Missing%20Website%20ID-red?style=${style}`);
+      return res.redirect(
+        `https://img.shields.io/badge/Error-Missing%20Website%20ID-red?style=${style}`,
+      );
     }
 
     if (!token) {
-      return res.redirect(`https://img.shields.io/badge/Error-Missing%20API%20Token-red?style=${style}`);
+      return res.redirect(
+        `https://img.shields.io/badge/Error-Missing%20API%20Token-red?style=${style}`,
+      );
     }
 
     const resolvedUmamiUrl = resolveUmamiUrl(umamiUrl);
     if (!resolvedUmamiUrl) {
-      return res.redirect(`https://img.shields.io/badge/Error-Invalid%20Umami%20URL-red?style=${style}`);
+      return res.redirect(
+        `https://img.shields.io/badge/Error-Invalid%20Umami%20URL-red?style=${style}`,
+      );
     }
 
     // Create cache key
@@ -83,16 +89,22 @@ app.get('/api/:metric', async (req, res) => {
 
     if (!data) {
       // Fetch data from Umami API
-      data = await fetchUmamiData(resolvedUmamiUrl, website, token, metric, range);
-      
+      data = await fetchUmamiData(
+        resolvedUmamiUrl,
+        website,
+        token,
+        metric,
+        range,
+      );
+
       // Cache the result
       let cacheTime = 300;
-      
+
       // For live/realtime metrics, use shorter cache (60 seconds default)
-      if (metric === 'live' || metric === 'realtime') {
+      if (metric === "live" || metric === "realtime") {
         cacheTime = 60;
       }
-      
+
       const parsedCache = parseInt(cacheParam);
       if (parsedCache && parsedCache > 0) {
         cacheTime = parsedCache;
@@ -111,36 +123,37 @@ app.get('/api/:metric', async (req, res) => {
       message: formattedValue,
       color: badgeColor,
       style,
-      logo
+      logo,
     });
 
     res.set({
-      'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-      'Pragma': 'no-cache',
-      'Expires': '0',
-      'Content-Type': 'image/svg+xml'
+      "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
+      Pragma: "no-cache",
+      Expires: "0",
+      "Content-Type": "image/svg+xml",
     });
 
     // Fetch the SVG and return it directly to avoid redirect caching
     const badgeResponse = await fetch(shieldsUrl);
     if (!badgeResponse.ok) {
-      throw new Error(`Shields.io error: ${badgeResponse.status} ${badgeResponse.statusText}`);
+      throw new Error(
+        `Shields.io error: ${badgeResponse.status} ${badgeResponse.statusText}`,
+      );
     }
     const badgeSvg = await badgeResponse.text();
     res.status(badgeResponse.status).send(badgeSvg);
-
   } catch (error) {
-    console.error('Error generating badge:', error);
-    const style = req.query.style || 'flat';
+    console.error("Error generating badge:", error);
+    const style = req.query.style || "flat";
     const errorUrl = `https://img.shields.io/badge/Error-Failed%20to%20fetch-red?style=${style}`;
     try {
       const errorResponse = await fetch(errorUrl);
       const errorSvg = await errorResponse.text();
       res.set({
-        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'Content-Type': 'image/svg+xml'
+        "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
+        Pragma: "no-cache",
+        Expires: "0",
+        "Content-Type": "image/svg+xml",
       });
       res.status(errorResponse.status).send(errorSvg);
     } catch (fallbackError) {
@@ -150,56 +163,66 @@ app.get('/api/:metric', async (req, res) => {
 });
 
 // Fetch data from Umami API
-async function fetchUmamiData(umamiUrl, websiteId, token, metric, range = 'all') {
-  const baseUrl = umamiUrl.replace(/\/$/, ''); // Remove trailing slash
-  
+async function fetchUmamiData(
+  umamiUrl,
+  websiteId,
+  token,
+  metric,
+  range = "all",
+) {
+  const baseUrl = umamiUrl.replace(/\/$/, ""); // Remove trailing slash
+
   // For realtime/live metrics, use the realtime endpoint
-  if (metric === 'live' || metric === 'realtime') {
+  if (metric === "live" || metric === "realtime") {
     const url = `${baseUrl}/realtime/${websiteId}`;
     const headers = {
-      'Accept': 'application/json',
-      'User-Agent': 'Umami-Badges/1.0',
-      'x-umami-api-key': token
+      Accept: "application/json",
+      "User-Agent": "Umami-Badges/1.0",
+      "x-umami-api-key": token,
     };
 
     const response = await fetch(url, { headers });
-    
+
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Umami API error: ${response.status} ${response.statusText} - ${errorText}`);
+      throw new Error(
+        `Umami API error: ${response.status} ${response.statusText} - ${errorText}`,
+      );
     }
 
     return await response.json();
   }
-  
+
   // Calculate date range based on range parameter
   const endDate = new Date().getTime();
   let startTime;
-  
-  if (range === 'all') {
+
+  if (range === "all") {
     // All-time: Use a date far in the past (e.g., year 2000)
-    startTime = new Date('2000-01-01').getTime();
+    startTime = new Date("2000-01-01").getTime();
   } else {
     const startDate = new Date();
-    const days = parseInt(range.replace('d', ''));
+    const days = parseInt(range.replace("d", ""));
     startDate.setDate(startDate.getDate() - days);
     startTime = startDate.getTime();
   }
 
   // Build the stats URL (baseUrl already contains /v1)
   const url = `${baseUrl}/websites/${websiteId}/stats?startAt=${startTime}&endAt=${endDate}`;
-  
+
   const headers = {
-    'Accept': 'application/json',
-    'User-Agent': 'Umami-Badges/1.0',
-    'x-umami-api-key': token  // Umami uses x-umami-api-key header for API key authentication
+    Accept: "application/json",
+    "User-Agent": "Umami-Badges/1.0",
+    "x-umami-api-key": token, // Umami uses x-umami-api-key header for API key authentication
   };
 
   const response = await fetch(url, { headers });
-  
+
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Umami API error: ${response.status} ${response.statusText} - ${errorText}`);
+    throw new Error(
+      `Umami API error: ${response.status} ${response.statusText} - ${errorText}`,
+    );
   }
 
   return await response.json();
@@ -208,56 +231,56 @@ async function fetchUmamiData(umamiUrl, websiteId, token, metric, range = 'all')
 // Format metric value for display
 function formatMetricValue(data, metric) {
   let value = 0;
-  let formattedValue = 'N/A';
+  let formattedValue = "N/A";
 
   try {
     /* istanbul ignore next */
     const metrics = {
-      'views': () => {
+      views: () => {
         value = data.pageviews || 0;
         formattedValue = formatNumber(value);
       },
-      'visitors': () => {
+      visitors: () => {
         value = data.visitors || 0;
         formattedValue = formatNumber(value);
       },
-      'visits': () => {
+      visits: () => {
         value = data.visits || 0;
         formattedValue = formatNumber(value);
       },
-      'bounce-rate': () => {
+      "bounce-rate": () => {
         value = data.bounces || 0;
-        const totalVisits = (data.visits && data.visits > 0) ? data.visits : 1;
+        const totalVisits = data.visits && data.visits > 0 ? data.visits : 1;
         const bounceRate = (value / totalVisits) * 100;
         formattedValue = `${bounceRate.toFixed(1)}%`;
       },
-      'avg-session': () => {
+      "avg-session": () => {
         // Umami returns totaltime in seconds (total across all visits)
         const totalTime = data.totaltime || 0;
-        const visits = (data.visits && data.visits > 0) ? data.visits : 1;
+        const visits = data.visits && data.visits > 0 ? data.visits : 1;
         value = totalTime / visits;
         formattedValue = formatDuration(value);
       },
-      'live': () => {
+      live: () => {
         // Realtime data returns totals.visitors for active visitors
         value = data.totals?.visitors || 0;
         formattedValue = formatNumber(value);
       },
-      'realtime': () => {
+      realtime: () => {
         // Alias for 'live'
         value = data.totals?.visitors || 0;
         formattedValue = formatNumber(value);
-      }
+      },
     };
 
     if (metrics[metric]) {
       metrics[metric]();
     } else {
-      formattedValue = 'Unknown';
+      formattedValue = "Unknown";
     }
   } catch (error) {
-    console.error('Error formatting metric:', error);
-    formattedValue = 'Error';
+    console.error("Error formatting metric:", error);
+    formattedValue = "Error";
   }
 
   return { value, formattedValue };
@@ -266,13 +289,13 @@ function formatMetricValue(data, metric) {
 // Format large numbers with K, M, B suffixes
 function formatNumber(num) {
   if (num >= 1000000000) {
-    return (num / 1000000000).toFixed(1) + 'B';
+    return (num / 1000000000).toFixed(1) + "B";
   }
   if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
+    return (num / 1000000).toFixed(1) + "M";
   }
   if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'K';
+    return (num / 1000).toFixed(1) + "K";
   }
   return num.toString();
 }
@@ -280,64 +303,64 @@ function formatNumber(num) {
 // Format duration in seconds to human readable format
 function formatDuration(seconds) {
   const totalSeconds = Math.floor(seconds);
-  
+
   if (totalSeconds === 0) {
-    return '0s';
+    return "0s";
   }
-  
+
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
-  
+
   const parts = [];
   if (hours > 0) parts.push(`${hours}h`);
   if (minutes > 0) parts.push(`${minutes}m`);
   if (secs > 0) parts.push(`${secs}s`);
-  
-  return parts.join(' ');
+
+  return parts.join(" ");
 }
 
 // Get default label for metric
 function getDefaultLabel(metric) {
   const labels = {
-    'views': 'Views',
-    'visitors': 'Visitors',
-    'visits': 'Visits',
-    'bounce-rate': 'Bounce Rate',
-    'avg-session': 'Avg Session',
-    'live': 'Live Visitors',
-    'realtime': 'Live Visitors'
+    views: "Views",
+    visitors: "Visitors",
+    visits: "Visits",
+    "bounce-rate": "Bounce Rate",
+    "avg-session": "Avg Session",
+    live: "Live Visitors",
+    realtime: "Live Visitors",
   };
   return labels[metric] || metric;
 }
 
 // Get appropriate color for metric
 function getMetricColor(metric, requestedColor, value) {
-  if (requestedColor && requestedColor !== 'auto') {
+  if (requestedColor && requestedColor !== "auto") {
     return requestedColor;
   }
 
   // Auto-select colors based on metric type
   const colorMap = {
-    'views': 'brightgreen',
-    'visitors': 'green',
-    'visits': 'blue',
-    'bounce-rate': value > 70 ? 'red' : value > 40 ? 'orange' : 'green',
-    'avg-session': 'purple',
-    'live': 'red',
-    'realtime': 'red'
+    views: "brightgreen",
+    visitors: "green",
+    visits: "blue",
+    "bounce-rate": value > 70 ? "red" : value > 40 ? "orange" : "green",
+    "avg-session": "purple",
+    live: "red",
+    realtime: "red",
   };
 
-  return colorMap[metric] || 'blue';
+  return colorMap[metric] || "blue";
 }
 
 // Build shields.io URL
 function buildShieldsUrl({ label, message, color, style, logo }) {
   const params = new URLSearchParams();
-  params.append('style', style);
-  
+  params.append("style", style);
+
   if (logo) {
-    params.append('logo', logo);
+    params.append("logo", logo);
   }
 
   const encodedLabel = encodeURIComponent(label);
@@ -348,13 +371,13 @@ function buildShieldsUrl({ label, message, color, style, logo }) {
 }
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
 // Start server
 /* istanbul ignore next */
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
     console.log(`Umami Badges server running at: http://localhost:${port}`);
   });
