@@ -14,7 +14,7 @@
   "devDependencies": {
     "jest": "^30.5.1",
     "jest-environment-jsdom": "^30.5.1",
-    "prettier": "^3.9.6"
+    "prettier": "^3.9.8"
   },
   "jest": {
     "testEnvironment": "jsdom",
