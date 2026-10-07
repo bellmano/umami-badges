@@ -64,18 +64,26 @@ https://umami-badges.vercel.app/api/{metric}?website={WEBSITE_ID}&token={API_TOK
 | `color` | Badge color | `brightgreen`, `green`, `blue`, `red`, `orange`, `yellow`, `purple`, or hex codes |
 | `label` | Custom label text | Any text (URL encoded) |
 
-## :test_tube: Running Tests
+## :test_tube: Local Development and Testing
+
+To run the website locally:
+
+1. Install the dependencies:
+   ```powershell
+   npm install
+   ```
+2. Start the development server:
+   ```powershell
+   npm run dev
+   ```
+3. Open the local URL printed in the terminal.
 
 To run the tests and view coverage:
 
-1. Install the required dev dependency:
-	```powershell
-	npm install
-	```
-2. Run the test coverage script:
-	```powershell
-	npm run test:coverage
-	```
+1. Run the test coverage script:
+   ```powershell
+   npm run test:coverage
+   ```
 
 This will execute the tests and generate a coverage report.
 
