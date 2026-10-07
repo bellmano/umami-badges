@@ -7,3 +7,5 @@ README.md
 sonar-project.properties
 package-lock.json
 CONTRIBUTING.md
+.prettierignore
+.prettierrc.json
