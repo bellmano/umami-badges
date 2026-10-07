@@ -41,7 +41,7 @@
     "node-fetch": "^2.7.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": "18.x"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
