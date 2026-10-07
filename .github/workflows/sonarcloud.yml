@@ -14,14 +14,14 @@ jobs:
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Install npm
-        run: npm install
-
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: "18"
+          node-version: "22"
           cache: "npm"
+
+      - name: Install npm
+        run: npm ci
 
       - name: Run tests with coverage
         run: npm run test:coverage
