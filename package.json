@@ -16,6 +16,9 @@
     "jest-environment-jsdom": "^30.5.2",
     "prettier": "^3.9.9"
   },
+  "overrides": {
+    "argparse": "^2.0.1"
+  },
   "jest": {
     "testEnvironment": "jsdom",
     "collectCoverageFrom": [
