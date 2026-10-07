@@ -5,16 +5,20 @@
   "main": "api/api.js",
   "scripts": {
     "start": "node api/api.js",
-    "dev": "node api/api.js",
+    "dev": "concurrently -k -n api,vite \"npm:dev:api\" \"npm:dev:vite\"",
+    "dev:api": "node api/api.js",
+    "dev:vite": "vite",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "concurrently": "^10.0.5",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
-    "prettier": "^3.9.9"
+    "prettier": "^3.9.9",
+    "vite": "^8.3.3"
   },
   "overrides": {
     "argparse": "^2.0.1"

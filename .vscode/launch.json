@@ -5,10 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "chrome",
+      "type": "node-terminal",
       "request": "launch",
       "name": "Launch Website",
-      "file": "${workspaceFolder}/index.html"
+      "command": "npm run dev",
+      "serverReadyAction": {
+        "pattern": "Local:\\s+(https?://\\S+)",
+        "uriFormat": "%s",
+        "action": "openExternally"
+      }
     }
   ]
 }

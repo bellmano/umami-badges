@@ -1,5 +1,6 @@
 .github/
 .vscode/
+vite.config.mjs
 tests/
 img/bellmano-kofi.jpg
 LICENSE
