@@ -14,7 +14,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "concurrently": "^10.0.5",
+    "concurrently": "^10.0.6",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
     "prettier": "^3.9.9",
