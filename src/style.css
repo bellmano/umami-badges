@@ -31,9 +31,9 @@
   --button-hover: #ddd;
 }
 
-body {
-  background-color: var(--bg-color) !important;
-  color: var(--text-color) !important;
+[data-theme] body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
   transition:
     background-color 0.3s,
     color 0.3s;
@@ -71,7 +71,7 @@ body {
 }
 
 footer {
-  color: var(--footer-color) !important;
+  color: var(--footer-color);
   transition: color 0.3s;
 }
 
@@ -125,52 +125,52 @@ footer p {
 
 /* Overrides for Tailwind classes in dark mode */
 [data-theme="dark"] .bg-gray-50 {
-  background-color: var(--bg-color) !important;
+  background-color: var(--bg-color);
 }
 
 [data-theme="dark"] .bg-white {
-  background-color: var(--container-bg) !important;
+  background-color: var(--container-bg);
 }
 
 [data-theme="dark"] .text-gray-800 {
-  color: var(--text-color) !important;
+  color: var(--text-color);
 }
 
 [data-theme="dark"] .text-gray-600 {
-  color: var(--text-color) !important;
+  color: var(--text-color);
 }
 [data-theme="dark"] .text-gray-700 {
-  color: var(--text-color) !important;
+  color: var(--text-color);
 }
 [data-theme="dark"] .text-gray-500 {
-  color: var(--text-color) !important;
+  color: var(--text-color);
 }
 
 [data-theme="dark"] .border-gray-300 {
-  border-color: var(--border-color) !important;
+  border-color: var(--border-color);
 }
 
 [data-theme="dark"] .bg-gray-100 {
-  background-color: #444 !important;
+  background-color: #444;
 }
 
 [data-theme="dark"] .hover\:bg-blue-600:hover {
-  background-color: #2563eb !important;
+  background-color: #2563eb;
 }
 
 /* Input fields in dark mode */
 [data-theme="dark"] input,
 [data-theme="dark"] textarea,
 [data-theme="dark"] select {
-  background-color: var(--container-bg) !important;
-  color: var(--text-color) !important;
-  border-color: var(--border-color) !important;
+  background-color: var(--container-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
 }
 
 /* Readonly inputs with bg-gray-50 */
 [data-theme="dark"] input.bg-gray-50 {
-  background-color: var(--bg-color) !important;
-  color: var(--text-color) !important;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 /* Field wrapper for consistent spacing and alignment */
@@ -297,9 +297,9 @@ footer p {
 }
 
 /* Better focus states */
-input:focus,
-select:focus {
-  outline: none !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+[data-theme] input:focus,
+[data-theme] select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
