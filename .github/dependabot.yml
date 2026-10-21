@@ -7,3 +7,4 @@ updates:
       day: "wednesday"
       time: "08:00"
       timezone: "Europe/Stockholm"
+    open-pull-requests-limit: 100
