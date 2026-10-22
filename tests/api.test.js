@@ -3,9 +3,9 @@ const { TextEncoder, TextDecoder } = require("util");
 global.TextEncoder = global.TextEncoder || TextEncoder;
 global.TextDecoder = global.TextDecoder || TextDecoder;
 
-// Mock node-fetch before requiring api
-jest.mock("node-fetch");
-const fetch = require("node-fetch");
+// Mock the native fetch API before requiring api
+const fetch = jest.fn();
+global.fetch = fetch;
 
 // Mock fs for Express to serve files
 jest.mock("fs");

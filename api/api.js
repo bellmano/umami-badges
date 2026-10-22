@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch");
+const fetch = globalThis.fetch;
 const NodeCache = require("node-cache");
 const path = require("path");
 
