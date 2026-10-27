@@ -96,7 +96,10 @@ footer p {
 .github-link,
 .linkedin-link {
   color: var(--footer-color);
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.3s ease;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -115,7 +118,7 @@ footer p {
 .linkedin-icon {
   width: 20px;
   height: 20px;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .github-link:hover .github-icon,
@@ -187,7 +190,9 @@ footer p {
   border: none;
   padding: 0;
   font-size: 14px;
-  transition: all 0.2s;
+  transition:
+    color 0.2s,
+    transform 0.2s;
   outline: none;
 }
 
@@ -302,4 +307,23 @@ footer p {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme] body,
+  #theme-toggle,
+  footer,
+  .github-link,
+  .linkedin-link,
+  .github-icon,
+  .linkedin-icon,
+  .tooltip-trigger,
+  .tooltip-close,
+  .cursor-help {
+    transition: none;
+  }
+
+  .tooltip-popup {
+    animation: none;
+  }
 }
