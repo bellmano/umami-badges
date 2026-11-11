@@ -14,11 +14,11 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "concurrently": "^10.0.6",
+    "concurrently": "^10.0.7",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
     "prettier": "^3.9.10",
-    "vite": "^8.3.5"
+    "vite": "^8.3.6"
   },
   "overrides": {
     "argparse": "^2.0.1",
