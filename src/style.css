@@ -34,6 +34,7 @@
 [data-theme] body {
   background-color: var(--bg-color);
   color: var(--text-color);
+  font-family: "Manrope", sans-serif;
   transition:
     background-color 0.3s,
     color 0.3s;

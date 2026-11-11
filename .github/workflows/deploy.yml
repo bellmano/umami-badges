@@ -22,7 +22,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Deploy to Vercel
         run: npx vercel@latest --prod -t ${{ secrets.VERCEL_TOKEN }} --yes

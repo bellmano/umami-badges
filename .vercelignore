@@ -2,6 +2,7 @@
 .vscode/
 vite.config.mjs
 tests/
+dist/
 img/bellmano-kofi.jpg
 LICENSE
 README.md

@@ -1,12 +1,15 @@
+import { vi } from "vitest";
+
 // Mock the clipboard API
 Object.assign(navigator, {
   clipboard: {
-    writeText: jest.fn(() => Promise.resolve()),
+    writeText: vi.fn(() => Promise.resolve()),
   },
 });
 
-// Load the script
-require("../src/script.js");
+beforeAll(async () => {
+  await import("../src/script.js");
+});
 
 describe("Badge Generator", () => {
   let container, localStorageMock;
@@ -14,17 +17,17 @@ describe("Badge Generator", () => {
   beforeEach(() => {
     // Mock localStorage
     localStorageMock = {
-      getItem: jest.fn(),
-      setItem: jest.fn(),
-      clear: jest.fn(),
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      clear: vi.fn(),
     };
     Object.defineProperty(global, "localStorage", {
       value: localStorageMock,
       writable: true,
     });
 
-    global.alert = jest.fn();
-    Element.prototype.scrollIntoView = jest.fn();
+    global.alert = vi.fn();
+    Element.prototype.scrollIntoView = vi.fn();
     navigator.clipboard.writeText.mockClear();
 
     // Create DOM
@@ -74,7 +77,7 @@ describe("Badge Generator", () => {
 
   afterEach(() => {
     document.body.removeChild(container);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("validates required fields and generates badge with all parameter combinations", () => {
@@ -179,7 +182,7 @@ describe("Badge Generator", () => {
     const button = directUrl.nextElementSibling;
     const originalIcon = button.innerHTML;
 
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     // Call the actual copyToClipboard function
     globalThis.copyToClipboard("directUrl");
@@ -189,13 +192,13 @@ describe("Badge Generator", () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(directUrl.value);
     expect(button.innerHTML).toContain("fa-check");
 
-    jest.advanceTimersByTime(1000);
+    vi.advanceTimersByTime(1000);
     expect(button.innerHTML).toBe(originalIcon);
 
-    jest.useRealTimers();
+    vi.useRealTimers();
 
     // Test error handling
-    const consoleError = jest.spyOn(console, "error").mockImplementation();
+    const consoleError = vi.spyOn(console, "error").mockImplementation();
     navigator.clipboard.writeText.mockRejectedValueOnce(
       new Error("Copy failed"),
     );
