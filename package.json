@@ -8,45 +8,24 @@
     "dev": "concurrently -k -n api,vite \"npm:dev:api\" \"npm:dev:vite\"",
     "dev:api": "node api/api.js",
     "dev:vite": "vite",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test": "vitest run --globals --environment jsdom",
+    "test:coverage": "vitest run --globals --environment jsdom --coverage --coverage.provider=istanbul --coverage.include=api/api.js --coverage.include=src/script.js --coverage.reporter=text --coverage.reporter=lcov --coverage.reporter=html",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@vitest/coverage-istanbul": "^5.1.0",
     "concurrently": "^10.0.7",
-    "jest": "^30.5.2",
-    "jest-environment-jsdom": "^30.5.2",
+    "jsdom": "^27.4.0",
     "prettier": "^3.9.10",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   },
   "overrides": {
     "argparse": "^2.0.1",
     "concurrently": {
       "shell-quote": "^1.11.0"
-    },
-    "jest-environment-jsdom": {
-      "jsdom": "^27.4.0"
-    },
-    "glob": "^13.0.6"
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "collectCoverageFrom": [
-      "api/api.js",
-      "src/script.js"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "text",
-      "lcov",
-      "html"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/tests/"
-    ],
-    "transform": {}
+    }
   },
   "dependencies": {
     "cors": "^2.8.6",

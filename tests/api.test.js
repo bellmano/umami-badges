@@ -1,15 +1,11 @@
-// Polyfill TextEncoder/TextDecoder for the Jest environment
-const { TextEncoder, TextDecoder } = require("util");
-global.TextEncoder = global.TextEncoder || TextEncoder;
-global.TextDecoder = global.TextDecoder || TextDecoder;
+import { vi } from "vitest";
 
-// Mock the native fetch API before requiring api
-const fetch = jest.fn();
+process.env.NODE_ENV = "test";
+
+const fetch = vi.fn();
 global.fetch = fetch;
 
-// Mock fs for Express to serve files
-jest.mock("fs");
-
+const api = await import("../api/api.js");
 const {
   fetchUmamiData,
   formatMetricValue,
@@ -19,13 +15,12 @@ const {
   getMetricColor,
   buildShieldsUrl,
   resolveUmamiUrl,
-} = require("../api/api");
-
-const app = require("../api/api");
+} = api.default;
+const app = api.default;
 
 // Suppress console.error during tests
 beforeAll(() => {
-  jest.spyOn(console, "error").mockImplementation(() => {});
+  vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterAll(() => {
@@ -295,12 +290,12 @@ describe("API Functions", () => {
       fetch.mockClear();
       mockReq = { params: {}, query: {} };
       mockRes = {
-        redirect: jest.fn(),
-        json: jest.fn(),
-        sendFile: jest.fn(),
-        set: jest.fn(),
-        status: jest.fn().mockReturnThis(),
-        send: jest.fn(),
+        redirect: vi.fn(),
+        json: vi.fn(),
+        sendFile: vi.fn(),
+        set: vi.fn(),
+        status: vi.fn().mockReturnThis(),
+        send: vi.fn(),
       };
     });
 
