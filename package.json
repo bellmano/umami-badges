@@ -14,7 +14,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@vitest/coverage-istanbul": "^5.1.0",
+    "@vitest/coverage-istanbul": "^5.1.1",
     "concurrently": "^10.0.7",
     "jsdom": "^31.0.1",
     "prettier": "^3.10.1",
